@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPO Hype Tracker Newsletter</title>
+  <style>
+    @media print {
+      @page {
+        margin: 1cm;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #1f2937;
+      margin: 0;
+      padding: 0;
+      color: #ffffff;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #1f2937;
+    }
+    .header {
+      padding: 48px 32px;
+      background-color: #1f2937;
+      position: relative;
+    }
+    .vol-badge {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+    .header-title {
+      color: #ff6b35;
+      font-size: 72px;
+      font-weight: 900;
+      line-height: 0.9;
+      margin: 20px 0;
+      letter-spacing: -2px;
+    }
+    .header-title-line {
+      display: block;
+    }
+    .header-divider {
+      border: none;
+      border-top: 1px solid #ffffff;
+      margin: 24px 0;
+      opacity: 0.3;
+    }
+    .header-intro {
+      color: #ffffff;
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0;
+      max-width: 800px;
+    }
+    .section {
+      padding: 48px 32px;
+    }
+    .section-title {
+      color: #ffffff;
+      font-size: 48px;
+      font-weight: 900;
+      margin: 0 0 16px;
+      line-height: 0.9;
+      letter-spacing: -1px;
+    }
+    .section-title-line {
+      display: block;
+    }
+    .section-description {
+      color: #ffffff;
+      font-size: 16px;
+      margin: 0 0 32px;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+    .content-section {
+      background-color: #4b5563;
+      padding: 48px 32px;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin-top: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      background-color: #374151;
+    }
+    th {
+      padding: 16px 12px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      color: #ffffff;
+      background-color: #1f2937;
+      border-bottom: 2px solid #ff6b35;
+    }
+    td {
+      padding: 14px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 13px;
+      white-space: nowrap;
+      vertical-align: top;
+    }
+    tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    tr:hover {
+      background-color: rgba(255, 107, 53, 0.1);
+    }
+    .footer {
+      padding: 32px;
+      background-color: #1f2937;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .footer-text {
+      color: #ffffff;
+      font-size: 14px;
+      margin: 0;
+      opacity: 0.7;
+    }
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 16px;
+      text-decoration: none;
+    }
+    .cta-arrow {
+      color: #ff6b35;
+      font-size: 18px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin: 32px 0;
+    }
+    .stat-card {
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+    .stat-number {
+      color: #ff6b35;
+      font-size: 36px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    .stat-label {
+      color: #ffffff;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.8;
+    }
+    .performance-section {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .sector-allocation {
+      flex: 1;
+      min-width: 300px;
+    }
+    .ipo-calendar {
+      flex: 1;
+      min-width: 300px;
+    }
+    .calendar-controls {
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .calendar-view-switcher {
+      display: flex;
+      gap: 8px;
+    }
+    .view-btn {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .view-btn:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    .view-btn.active {
+      background-color: #ff6b35;
+      border-color: #ff6b35;
+      color: #ffffff;
+    }
+    .calendar-navigation {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-btn {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    .current-month {
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      min-width: 120px;
+      text-align: center;
+    }
+    .calendar-filters {
+      display: flex;
+      gap: 8px;
+    }
+    .filter-select {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .filter-select option {
+      background-color: #1f2937;
+      color: #ffffff;
+    }
+    .calendar-container {
+      margin-top: 16px;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 24px;
+      overflow-x: auto;
+      min-height: 400px;
+    }
+    .calendar-month-view {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .calendar-month-view th {
+      background-color: #ff6b35;
+      color: #ffffff;
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .calendar-month-view td {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 4px;
+      vertical-align: top;
+      height: 80px;
+      width: 14.28%;
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+    .calendar-month-view td.empty-cell {
+      background-color: transparent;
+      border: none;
+    }
+    .calendar-month-view td.today {
+      background-color: rgba(255, 107, 53, 0.2);
+      border: 2px solid #ff6b35;
+    }
+    .day-number {
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .calendar-event {
+      font-size: 10px;
+      padding: 3px 6px;
+      margin: 2px 0;
+      border-radius: 3px;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    .calendar-event.priced {
+      background-color: #10b981;
+      color: #ffffff;
+      border-left: 3px solid #059669;
+    }
+    .calendar-event.upcoming {
+      background-color: #3b82f6;
+      color: #ffffff;
+      border-left: 3px solid #2563eb;
+    }
+    .calendar-event.filing {
+      background-color: #fbbf24;
+      color: #1f2937;
+      border-left: 3px solid #f59e0b;
+    }
+    .calendar-month-view-wrapper {
+      width: 100%;
+    }
+    .calendar-week-view {
+      display: none;
+      width: 100%;
+    }
+    .calendar-week-view.active {
+      display: block;
+    }
+    .calendar-month-view-wrapper.active {
+      display: block;
+    }
+    .week-header {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      margin-bottom: 0;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .week-day-header {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .week-day-header:last-child {
+      border-right: none;
+    }
+    .week-day-header.today {
+      background-color: rgba(255, 107, 53, 0.2);
+      color: #ff6b35;
+    }
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: none;
+      height: 400px;
+      overflow-y: auto;
+    }
+    .week-day-cell {
+      background-color: rgba(255, 255, 255, 0.02);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 8px;
+      position: relative;
+      min-height: 400px;
+    }
+    .week-day-cell:last-child {
+      border-right: none;
+    }
+    .week-day-cell.today {
+      background-color: rgba(255, 107, 53, 0.05);
+    }
+    .week-event {
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.4;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    .week-event.priced {
+      background-color: #10b981;
+      color: #ffffff;
+      border-left: 3px solid #059669;
+    }
+    .week-event.upcoming {
+      background-color: #3b82f6;
+      color: #ffffff;
+      border-left: 3px solid #2563eb;
+    }
+    .week-event.filing {
+      background-color: #fbbf24;
+      color: #1f2937;
+      border-left: 3px solid #f59e0b;
+    }
+    .week-event small {
+      display: block;
+      font-size: 9px;
+      opacity: 0.9;
+      margin-top: 2px;
+      font-weight: 400;
+    }
+    .bar-chart-container {
+      margin-top: 74px;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 24px;
+      min-height: 653px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .performance-table-container {
+      margin-top: 24px;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+    .performance-table-container table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      background-color: transparent;
+    }
+    .performance-table-container th {
+      padding: 10px 8px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      color: #ffffff;
+      background-color: transparent;
+      border-bottom: 2px solid #ff6b35;
+    }
+    .performance-table-container td {
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 12px;
+      white-space: nowrap;
+      vertical-align: top;
+    }
+    .performance-table-container tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+    .bar-item {
+      margin-bottom: 16px;
+    }
+    .bar-item:last-child {
+      margin-bottom: 0;
+    }
+    .bar-label {
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .bar-wrapper {
+      background-color: rgba(255, 255, 255, 0.1);
+      height: 28px;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+    .bar {
+      background: linear-gradient(90deg, #ff6b35 0%, #ff8c5a 100%);
+      height: 100%;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 10px;
+      transition: width 0.3s ease;
+      min-width: 40px;
+    }
+    .bar-value {
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .market-insights {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .insights-title {
+      color: #ffffff;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .insights-list {
+      list-style: none;
+      padding: 0;
+    }
+    .insights-list li {
+      color: #ffffff;
+      font-size: 18px;
+      line-height: 2;
+      margin-bottom: 20px;
+      padding-left: 32px;
+      position: relative;
+      opacity: 0.9;
+    }
+    .insights-list li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #ff6b35;
+      font-weight: bold;
+    }
+    .insights-list li strong {
+      color: #ff6b35;
+    }
+    .top-stocks {
+      margin-top: 32px;
+    }
+    .stock-card {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 24px;
+      transition: all 0.3s ease;
+    }
+    .stock-card:hover {
+      background-color: rgba(255, 107, 53, 0.1);
+      border-color: rgba(255, 107, 53, 0.3);
+    }
+    .stock-rank {
+      color: #ff6b35;
+      font-size: 48px;
+      font-weight: 900;
+      line-height: 1;
+      min-width: 60px;
+    }
+    .stock-content {
+      flex: 1;
+    }
+    .stock-name {
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+    .stock-symbol {
+      color: #ff6b35;
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .stock-description {
+      color: #ffffff;
+      font-size: 15px;
+      line-height: 1.7;
+      margin: 0 0 12px;
+      opacity: 0.9;
+    }
+    .stock-details {
+      color: #ffffff;
+      font-size: 13px;
+      margin: 0;
+      opacity: 0.7;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .stock-details strong {
+      color: #ff6b35;
+    }
+    .table-footer {
+      color: #ffffff;
+      font-size: 12px;
+      margin-top: 16px;
+      opacity: 0.6;
+      font-style: italic;
+    }
+    tr {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="vol-badge">VOL. 01</div>
+      <h1 class="header-title">
+        <span class="header-title-line">WEEKLY</span>
+        <span class="header-title-line">NEWSLETTER</span>
+      </h1>
+      <hr class="header-divider">
+      <p class="header-intro">We're back with another edition of IPO Hype Tracker's newsletter, bringing you the latest insights straight from the IPO market. Let's take a look at what's new and exciting in the world of initial public offerings!</p>
+    </div>
+
+    <div class="content-section">
+      <h2 class="section-title">
+        <span class="section-title-line">TOP 5</span>
+        <span class="section-title-line">STOCKS</span>
+      </h2>
+      <p class="section-description">Our spotlight on the most significant IPOs this week, ranked by estimated offering volume and market impact.</p>
+      
+      <div class="top-stocks">
+        <div class="stock-card">
+          <div class="stock-rank">#1</div>
+          <div class="stock-content">
+            <h3 class="stock-name">Central Bancompany</h3>
+            <p class="stock-symbol">CBC | $399.4M</p>
+            <p class="stock-description">The largest offering of the week, this regional bank uplisting represents a major institutional play. With 17.8M shares priced at $21-24, Central Bancompany is positioning itself for significant market presence. Managed by a consortium of top-tier investment banks including Morgan Stanley, BofA Securities, and Piper Sandler.</p>
+            <p class="stock-details"><strong>Expected:</strong> 11/20/2025 Thursday | <strong>Price Range:</strong> $21.00 - $24.00</p>
+          </div>
+        </div>
+
+        <div class="stock-card">
+          <div class="stock-rank">#2</div>
+          <div class="stock-content">
+            <h3 class="stock-name">Alussa Energy Acquisition Corp. II</h3>
+            <p class="stock-symbol">ALUB.U | $250.0M</p>
+            <p class="stock-description">A special purpose acquisition company (SPAC) with a substantial $250M offering. This energy-focused SPAC is already priced at $10.00 per unit, indicating strong investor confidence. Santander is leading this offering, which represents one of the larger SPAC deals in recent weeks.</p>
+            <p class="stock-details"><strong>Expected:</strong> 11/13/2025 Priced | <strong>Price Range:</strong> $10.00 - $10.00</p>
+          </div>
+        </div>
+
+        <div class="stock-card">
+          <div class="stock-rank">#3</div>
+          <div class="stock-content">
+            <h3 class="stock-name">Gloo Holdings, Inc.</h3>
+            <p class="stock-symbol">GLOO | $100.1M</p>
+            <p class="stock-description">A mid-cap offering with strong institutional backing from Roth Capital Partners. With 9.1M shares priced between $10-12, Gloo Holdings represents a solid growth opportunity. The company is scheduled to trade on Wednesday, November 19th, making it one of the week's key mid-cap plays.</p>
+            <p class="stock-details"><strong>Expected:</strong> 11/19/2025 Wednesday | <strong>Price Range:</strong> $10.00 - $12.00</p>
+          </div>
+        </div>
+
+        <div class="stock-card">
+          <div class="stock-rank">#4</div>
+          <div class="stock-content">
+            <h3 class="stock-name">Public Policy Holding Co.</h3>
+            <p class="stock-symbol">PPHC | $60.0M</p>
+            <p class="stock-description">A NASDAQ uplisting with a fixed price offering at $14.64 per share. This public policy consulting firm is making the jump to a major exchange with backing from Oppenheimer & Co., Canaccord Genuity, and Texas Capital Securities. The fixed pricing suggests strong pre-market demand.</p>
+            <p class="stock-details"><strong>Expected:</strong> 12/1/2025 Week of | <strong>Price Range:</strong> $14.64 - $14.64</p>
+          </div>
+        </div>
+
+        <div class="stock-card">
+          <div class="stock-rank">#5</div>
+          <div class="stock-content">
+            <h3 class="stock-name">HW Electro Co., Ltd.</h3>
+            <p class="stock-symbol">HWEP | $16.6M</p>
+            <p class="stock-description">A new NASDAQ filing from the electronics sector, this Korean company is entering the U.S. markets with a $16.6M offering. Managed by American Trust Investment Services and WestPark Capital, this represents an international expansion play in the technology hardware space.</p>
+            <p class="stock-details"><strong>Expected:</strong> 12/1/2025 Week of | <strong>Price Range:</strong> $4.00 - $4.00</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2 class="section-title">
+        <span class="section-title-line">MARKET</span>
+        <span class="section-title-line">OVERVIEW</span>
+      </h2>
+      <p class="section-description">This week's IPO calendar features 17 companies preparing to go public, with an estimated total volume of $1.0B. The market shows diverse opportunities across various sectors, with companies ranging from small-cap offerings to major institutional deals.</p>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">17</div>
+          <div class="stat-label">Total IPOs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">$1.0B</div>
+          <div class="stat-label">Total Volume</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">$4-24</div>
+          <div class="stat-label">Price Range</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">3</div>
+          <div class="stat-label">Uplistings</div>
+        </div>
+      </div>
+
+      <div class="market-insights">
+        <h3 class="insights-title">KEY INSIGHTS</h3>
+        <ul class="insights-list">
+          <li><strong>Banking Sector:</strong> Central Bancompany leads with the largest offering at $399.4M, representing a significant institutional play in the financial services sector.</li>
+          <li><strong>Small-Cap Activity:</strong> 12 companies are pricing in the $4-6 range, indicating strong small-cap market activity and retail investor interest.</li>
+          <li><strong>Diverse Sectors:</strong> This week's calendar spans technology, healthcare, finance, gaming, and energy sectors, showcasing market breadth.</li>
+          <li><strong>Lead Managers:</strong> D. Boral Capital (ex-EF Hutton) is managing 5 offerings, while major institutions like Morgan Stanley and Roth Capital Partners are handling larger deals.</li>
+          <li><strong>Timing:</strong> 4 companies are already priced for November 13th, with the majority scheduled for late November to early December trading.</li>
+        </ul>
+      </div>
+
+      <div class="performance-section">
+        <div class="sector-allocation">
+          <h3 class="insights-title">SECTOR ALLOCATION</h3>
+          <div class="bar-chart-container">
+          <div class="bar-item">
+            <div class="bar-label">Real Estate/Investment</div>
+            <div class="bar-wrapper">
+              <div class="bar" style="width: 100%;">
+                <span class="bar-value">5</span>
+              </div>
+            </div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-label">Technology</div>
+            <div class="bar-wrapper">
+              <div class="bar" style="width: 60%;">
+                <span class="bar-value">3</span>
+              </div>
+            </div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-label">Consumer/Retail</div>
+            <div class="bar-wrapper">
+              <div class="bar" style="width: 60%;">
+                <span class="bar-value">3</span>
+              </div>
+            </div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-label">Healthcare/Biotech</div>
+            <div class="bar-wrapper">
+              <div class="bar" style="width: 40%;">
+                <span class="bar-value">2</span>
+              </div>
+            </div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-label">Financial Services</div>
+            <div class="bar-wrapper">
+              <div class="bar" style="width: 20%;">
+                <span class="bar-value">1</span>
+              </div>
+            </div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-label">Energy</div>
+            <div class="bar-wrapper">
+              <div class="bar" style="width: 20%;">
+                <span class="bar-value">1</span>
+              </div>
+            </div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-label">Gaming</div>
+            <div class="bar-wrapper">
+              <div class="bar" style="width: 20%;">
+                <span class="bar-value">1</span>
+              </div>
+            </div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-label">Professional Services</div>
+            <div class="bar-wrapper">
+              <div class="bar" style="width: 20%;">
+                <span class="bar-value">1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="ipo-calendar">
+          <h3 class="insights-title">IPO CALENDAR</h3>
+          <div class="calendar-controls">
+            <div class="calendar-view-switcher">
+              <button class="view-btn active" onclick="switchView('month')">MONTH</button>
+              <button class="view-btn" onclick="switchView('week')">WEEK</button>
+            </div>
+            <div class="calendar-navigation">
+              <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
+              <span class="current-month" id="currentMonth">November 2025</span>
+              <button class="nav-btn" onclick="changeMonth(1)">›</button>
+            </div>
+            <div class="calendar-filters">
+              <select class="filter-select" id="sectorFilter" onchange="filterCalendar()">
+                <option value="all">All Sectors</option>
+                <option value="technology">Technology</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="financial">Financial</option>
+                <option value="energy">Energy</option>
+                <option value="consumer">Consumer</option>
+              </select>
+            </div>
+          </div>
+          <div class="calendar-container" id="calendarContainer">
+            <!-- Calendar will be generated by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2 class="section-title">
+        <span class="section-title-line">UPCOMING</span>
+      </h2>
+      <p class="section-description">IPOs scheduled to trade in the coming weeks.</p>
+      <div class="table-container">
+        <table cellpadding="8" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Company Name</th>
+              <th>Exchange/ Market</th>
+              <th>Price</th>
+              <th>Shares</th>
+              <th>Expected IPO Date</th>
+              <th>Offer Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>LBRJ</td>
+              <td>Libera Gaming Operations, Inc</td>
+              <td>NASDAQ Capital</td>
+              <td>4.00-4.00</td>
+              <td>1,300,000</td>
+              <td>11/21/2025</td>
+              <td>$5,200,000</td>
+            </tr>
+            <tr>
+              <td>CBC</td>
+              <td>Central Bancompany, Inc. (Uplisting)</td>
+              <td>NASDAQ Global Select</td>
+              <td>21.00-24.00</td>
+              <td>17,800,000</td>
+              <td>11/20/2025</td>
+              <td>$399,400,000</td>
+            </tr>
+            <tr>
+              <td>RGNT</td>
+              <td>Regentis Biomaterials, Ltd.</td>
+              <td>NASDAQ Capital</td>
+              <td>10.00-12.00</td>
+              <td>1,000,000</td>
+              <td>11/14/2025</td>
+              <td>$11,000,000</td>
+            </tr>
+            <tr>
+              <td>DTDT</td>
+              <td>DT House Ltd.</td>
+              <td>NASDAQ Capital</td>
+              <td>4.00-5.00</td>
+              <td>2,000,000</td>
+              <td>11/17/2025</td>
+              <td>$9,000,000</td>
+            </tr>
+            <tr>
+              <td>ELCG</td>
+              <td>ELC Group Holdings Ltd.</td>
+              <td>NASDAQ Capital</td>
+              <td>4.00-6.00</td>
+              <td>1,900,000</td>
+              <td>11/17/2025</td>
+              <td>$9,400,000</td>
+            </tr>
+            <tr>
+              <td>GLOO</td>
+              <td>Gloo Holdings, Inc.</td>
+              <td>NASDAQ Global</td>
+              <td>10.00-12.00</td>
+              <td>9,100,000</td>
+              <td>11/19/2025</td>
+              <td>$100,100,000</td>
+            </tr>
+            <tr>
+              <td>ALEH</td>
+              <td>ALE Group Holding Limited</td>
+              <td>NASDAQ Capital</td>
+              <td>4.00-6.00</td>
+              <td>1,500,000</td>
+              <td>11/21/2025</td>
+              <td>$7,500,000</td>
+            </tr>
+            <tr>
+              <td>AVG</td>
+              <td>Anew Health Ltd.</td>
+              <td>NASDAQ Capital</td>
+              <td>4.00-6.00</td>
+              <td>1,800,000</td>
+              <td>11/21/2025</td>
+              <td>$9,000,000</td>
+            </tr>
+            <tr>
+              <td>MKTR</td>
+              <td>Monkey Tree Investment Ltd.</td>
+              <td>NASDAQ Capital</td>
+              <td>4.00-5.00</td>
+              <td>1,600,000</td>
+              <td>11/24/2025</td>
+              <td>$7,000,000</td>
+            </tr>
+            <tr>
+              <td>AIGO</td>
+              <td>AIGO Holding Ltd.</td>
+              <td>NASDAQ Capital</td>
+              <td>4.00-6.00</td>
+              <td>2,000,000</td>
+              <td>12/1/2025</td>
+              <td>$10,000,000</td>
+            </tr>
+            <tr>
+              <td>HWEP</td>
+              <td>HW Electro Co., Ltd. (NASDAQ-New Filing)</td>
+              <td>NASDAQ Capital</td>
+              <td>4.00-4.00</td>
+              <td>4,200,000</td>
+              <td>12/1/2025</td>
+              <td>$16,600,000</td>
+            </tr>
+            <tr>
+              <td>PLAI</td>
+              <td>PressLogic</td>
+              <td>NASDAQ Capital</td>
+              <td>4.00-6.00</td>
+              <td>1,800,000</td>
+              <td>12/1/2025</td>
+              <td>$9,000,000</td>
+            </tr>
+            <tr>
+              <td>PPHC</td>
+              <td>Public Policy Holding Co. (NASDAQ Uplisting)</td>
+              <td>NASDAQ Global</td>
+              <td>14.64-14.64</td>
+              <td>4,100,000</td>
+              <td>12/1/2025</td>
+              <td>$60,000,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-footer">LAST UPDATED: 11/13/2025* - Source: EDGAR® Online</p>
+    </div>
+
+    <div class="content-section">
+      <h2 class="section-title">
+        <span class="section-title-line">PRICED</span>
+      </h2>
+      <p class="section-description">IPOs that have been priced and are ready to trade.</p>
+      <div class="table-container">
+        <table cellpadding="8" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Company Name</th>
+              <th>Exchange/ Market</th>
+              <th>Price</th>
+              <th>Shares</th>
+              <th>Date</th>
+              <th>Offer Amount</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ALUB.U</td>
+              <td>Alussa Energy Acquisition Corp. II</td>
+              <td>NASDAQ Global</td>
+              <td>10.00</td>
+              <td>25,000,000</td>
+              <td>11/13/2025</td>
+              <td>$250,000,000</td>
+              <td>Priced</td>
+            </tr>
+            <tr>
+              <td>CABR</td>
+              <td>Caring Brands, Inc. (Uplisting)</td>
+              <td>NASDAQ Capital</td>
+              <td>4.00</td>
+              <td>1,000,000</td>
+              <td>11/13/2025</td>
+              <td>$4,000,000</td>
+              <td>Priced</td>
+            </tr>
+            <tr>
+              <td>OTH</td>
+              <td>Off the Hook YS</td>
+              <td>NYSE MKT</td>
+              <td>4.00</td>
+              <td>3,800,000</td>
+              <td>11/13/2025</td>
+              <td>$15,200,000</td>
+              <td>Priced</td>
+            </tr>
+            <tr>
+              <td>POAS</td>
+              <td>Phaos Technology (Cayman) Holdings Ltd.</td>
+              <td>NYSE MKT</td>
+              <td>4.00</td>
+              <td>3,600,000</td>
+              <td>11/13/2025</td>
+              <td>$14,400,000</td>
+              <td>Priced</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-footer">LAST UPDATED: 11/13/2025* - Source: EDGAR® Online</p>
+    </div>
+
+    <div class="content-section">
+      <h2 class="section-title">
+        <span class="section-title-line">FILINGS</span>
+      </h2>
+      <p class="section-description">Recent IPO filings submitted to the SEC.</p>
+      <div class="table-container">
+        <table cellpadding="8" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Company Name</th>
+              <th>Date Filed</th>
+              <th>Offer Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>HWEP</td>
+              <td>HW Electro Co., Ltd.</td>
+              <td>11/12/2025</td>
+              <td>$16,600,000</td>
+            </tr>
+            <tr>
+              <td>PPHC</td>
+              <td>Public Policy Holding Co.</td>
+              <td>11/10/2025</td>
+              <td>$60,000,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-footer">LAST UPDATED: 11/13/2025* - Source: EDGAR® Online</p>
+    </div>
+
+    <div class="footer">
+      <p class="footer-text">IPO HYPE TRACKER</p>
+      <p class="footer-text">2025</p>
+    </div>
+  </div>
+
+  <script>
+    // IPO Events Data
+    const ipoEvents = [
+      { date: '2025-11-13', symbol: 'ALUB.U', name: 'Alussa Energy Acquisition Corp. II', type: 'priced', sector: 'energy' },
+      { date: '2025-11-13', symbol: 'CABR', name: 'Caring Brands, Inc.', type: 'priced', sector: 'consumer' },
+      { date: '2025-11-13', symbol: 'OTH', name: 'Off the Hook YS', type: 'priced', sector: 'consumer' },
+      { date: '2025-11-13', symbol: 'POAS', name: 'Phaos Technology', type: 'priced', sector: 'technology' },
+      { date: '2025-11-14', symbol: 'RGNT', name: 'Regentis Biomaterials', type: 'upcoming', sector: 'healthcare' },
+      { date: '2025-11-17', symbol: 'DTDT', name: 'DT House Ltd.', type: 'upcoming', sector: 'financial' },
+      { date: '2025-11-17', symbol: 'ELCG', name: 'ELC Group Holdings', type: 'upcoming', sector: 'financial' },
+      { date: '2025-11-19', symbol: 'GLOO', name: 'Gloo Holdings, Inc.', type: 'upcoming', sector: 'consumer' },
+      { date: '2025-11-20', symbol: 'CBC', name: 'Central Bancompany', type: 'upcoming', sector: 'financial' },
+      { date: '2025-11-21', symbol: 'ALEH', name: 'ALE Group Holding', type: 'upcoming', sector: 'financial' },
+      { date: '2025-11-21', symbol: 'AVG', name: 'Anew Health Ltd.', type: 'upcoming', sector: 'healthcare' },
+      { date: '2025-11-21', symbol: 'LBRJ', name: 'Libera Gaming Operations', type: 'upcoming', sector: 'consumer' },
+      { date: '2025-11-24', symbol: 'MKTR', name: 'Monkey Tree Investment', type: 'upcoming', sector: 'financial' },
+      { date: '2025-12-01', symbol: 'AIGO', name: 'AIGO Holding Ltd.', type: 'upcoming', sector: 'financial' },
+      { date: '2025-12-01', symbol: 'HWEP', name: 'HW Electro Co., Ltd.', type: 'filing', sector: 'technology' },
+      { date: '2025-12-01', symbol: 'PLAI', name: 'PressLogic', type: 'upcoming', sector: 'technology' },
+      { date: '2025-12-01', symbol: 'PPHC', name: 'Public Policy Holding Co.', type: 'upcoming', sector: 'financial' }
+    ];
+
+    let currentDate = new Date(2025, 10, 13); // November 2025
+    let currentView = 'month';
+    let currentFilter = 'all';
+
+    function formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function getEventsForDate(dateStr) {
+      return ipoEvents.filter(event => {
+        if (currentFilter !== 'all') {
+          const sectorMap = {
+            'technology': 'technology',
+            'healthcare': 'healthcare',
+            'financial': 'financial',
+            'energy': 'energy',
+            'consumer': 'consumer'
+          };
+          if (event.sector !== sectorMap[currentFilter]) return false;
+        }
+        return event.date === dateStr;
+      });
+    }
+
+    function switchView(view) {
+      currentView = view;
+      document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.trim().toLowerCase() === view) {
+          btn.classList.add('active');
+        }
+      });
+      renderCalendar();
+    }
+
+    function changeMonth(direction) {
+      currentDate.setMonth(currentDate.getMonth() + direction);
+      renderCalendar();
+    }
+
+    function filterCalendar() {
+      currentFilter = document.getElementById('sectorFilter').value;
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const container = document.getElementById('calendarContainer');
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const monthElement = document.getElementById('currentMonth');
+      if (monthElement) {
+        monthElement.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+      }
+
+      if (currentView === 'month') {
+        renderMonthView(container);
+      } else {
+        renderWeekView(container);
+      }
+    }
+
+    function renderMonthView(container) {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const daysInMonth = lastDay.getDate();
+      const startingDayOfWeek = firstDay.getDay();
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+      let html = '<div class="calendar-month-view-wrapper">';
+      html += `<div style="color: #ffffff; font-size: 18px; font-weight: 700; margin-bottom: 16px; text-align: center;">${monthNames[month]} ${year}</div>`;
+      html += '<table class="calendar-month-view"><thead><tr>';
+      const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+      days.forEach(day => {
+        html += `<th>${day}</th>`;
+      });
+      html += '</tr></thead><tbody><tr>';
+
+      // Empty cells for days before the first day of the month
+      for (let i = 0; i < startingDayOfWeek; i++) {
+        html += '<td class="empty-cell"></td>';
+      }
+
+      // Current month days only
+      const today = new Date();
+      for (let day = 1; day <= daysInMonth; day++) {
+        if ((startingDayOfWeek + day - 1) % 7 === 0 && day > 1) {
+          html += '</tr><tr>';
+        }
+        const currentDayDate = new Date(year, month, day);
+        const dateStr = formatDate(currentDayDate);
+        const events = getEventsForDate(dateStr);
+        const isToday = year === today.getFullYear() && month === today.getMonth() && day === today.getDate();
+        html += `<td class="${isToday ? 'today' : ''}"><div class="day-number">${day}</div>`;
+        if (events.length > 0) {
+          events.forEach(event => {
+            const eventDate = new Date(event.date);
+            const dateDisplay = `${eventDate.getMonth() + 1}/${eventDate.getDate()}/${eventDate.getFullYear()}`;
+            html += `<div class="calendar-event ${event.type}" title="${event.name} (${event.symbol}) - Expected: ${dateDisplay}">${event.symbol}</div>`;
+          });
+        }
+        html += '</td>';
+      }
+
+      // Fill remaining cells in the last row with empty cells
+      const totalCellsUsed = startingDayOfWeek + daysInMonth;
+      const remainingCells = 7 - (totalCellsUsed % 7);
+      if (remainingCells > 0 && remainingCells < 7) {
+        for (let i = 0; i < remainingCells; i++) {
+          html += '<td class="empty-cell"></td>';
+        }
+      }
+
+      html += '</tr></tbody></table></div>';
+      container.innerHTML = html;
+    }
+
+    function renderWeekView(container) {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const date = currentDate.getDate();
+      const dayOfWeek = currentDate.getDay();
+      
+      // Start from Monday of the current week
+      const weekStart = new Date(year, month, date - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      const dayAbbr = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+      // Get week date range
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 4);
+      const weekRange = `${monthNames[weekStart.getMonth()]} ${weekStart.getDate()}-${weekEnd.getDate()}, ${weekStart.getFullYear()}`;
+
+      let html = '<div class="calendar-week-view active">';
+      html += `<div style="color: #ffffff; font-size: 18px; font-weight: 700; margin-bottom: 16px; text-align: center;">${weekRange}</div>`;
+      html += '<div class="week-header">';
+      
+      // Work week headers (Monday-Friday)
+      for (let i = 0; i < 5; i++) {
+        const currentDay = new Date(weekStart);
+        currentDay.setDate(weekStart.getDate() + i);
+        const isToday = currentDay.toDateString() === new Date().toDateString();
+        html += `<div class="week-day-header ${isToday ? 'today' : ''}">${dayAbbr[i]}<br><span style="font-weight: normal; font-size: 11px; opacity: 0.9;">${currentDay.getDate()}</span></div>`;
+      }
+      html += '</div><div class="week-grid">';
+
+      // Display events for each day
+      for (let i = 0; i < 5; i++) {
+        const currentDay = new Date(weekStart);
+        currentDay.setDate(weekStart.getDate() + i);
+        const dateStr = formatDate(currentDay);
+        const events = getEventsForDate(dateStr);
+        const isToday = currentDay.toDateString() === new Date().toDateString();
+        
+        html += `<div class="week-day-cell ${isToday ? 'today' : ''}">`;
+        
+        if (events.length > 0) {
+          events.forEach(event => {
+            const eventDate = new Date(event.date);
+            const dateDisplay = `${eventDate.getMonth() + 1}/${eventDate.getDate()}/${eventDate.getFullYear()}`;
+            html += `<div class="week-event ${event.type}" title="${event.name} (${event.symbol}) - Expected: ${dateDisplay}">
+              <strong>${event.symbol}</strong><br>
+              <small>${event.name.length > 30 ? event.name.substring(0, 30) + '...' : event.name}</small><br>
+              <small style="opacity: 0.9;">${dateDisplay}</small>
+            </div>`;
+          });
+        } else {
+          html += '<div style="color: rgba(255, 255, 255, 0.3); font-size: 12px; text-align: center; padding-top: 20px;">No IPOs</div>';
+        }
+        
+        html += '</div>';
+      }
+
+      html += '</div></div>';
+      container.innerHTML = html;
+    }
+
+    // Initialize calendar
+    document.addEventListener('DOMContentLoaded', function() {
+      renderCalendar();
+      
+      // Fix view switcher
+      document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          currentView = this.textContent.trim().toLowerCase();
+          renderCalendar();
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+

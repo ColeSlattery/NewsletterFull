@@ -1,0 +1,13 @@
+{
+  "crons": [
+    {
+      "path": "/api/newsletter/send",
+      "schedule": "0 13 * * *"
+    }
+  ],
+  "functions": {
+    "app/api/newsletter/send/route.ts": {
+      "maxDuration": 60
+    }
+  }
+}
